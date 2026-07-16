@@ -1,0 +1,31 @@
+---
+- name: Check that zabbix_agentd.conf exists
+  ansible.windows.win_stat:
+    path: "{{ zabbix_conf_path }}"
+  register: zabbix_conf_stat
+
+- name: Fail if the Zabbix agent config file is missing
+  ansible.builtin.fail:
+    msg: "{{ zabbix_conf_path }} not found on {{ inventory_hostname }} - is the Zabbix agent installed?"
+  when: not zabbix_conf_stat.stat.exists
+
+- name: Take a backup of zabbix_agentd.conf
+  ansible.windows.win_copy:
+    src: "{{ zabbix_conf_path }}"
+    dest: "{{ zabbix_conf_path }}.{{ ansible_date_time.iso8601_basic_short | default('bak') }}.bak"
+    remote_src: true
+  when: zabbix_backup_conf | bool
+
+- name: Set Hostname in zabbix_agentd.conf
+  community.windows.win_lineinfile:
+    path: "{{ zabbix_conf_path }}"
+    regexp: '^\s*Hostname\s*='
+    line: "Hostname={{ zabbix_hostname }}"
+    state: present
+  notify: Restart Zabbix Agent service
+
+- name: Ensure Zabbix Agent service is enabled and started
+  ansible.windows.win_service:
+    name: "{{ zabbix_service_name }}"
+    start_mode: auto
+    state: started

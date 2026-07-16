@@ -1,0 +1,24 @@
+---
+# Update the Hostname parameter in zabbix_agentd.conf on Windows servers
+# and make sure the Zabbix Agent service is running afterwards.
+#
+# Run from the Ansible server:
+#   ansible-playbook playbooks/update_zabbix_hostname.yml --ask-vault-pass
+#
+# Dry run first (recommended):
+#   ansible-playbook playbooks/update_zabbix_hostname.yml --ask-vault-pass --check --diff
+
+- name: Update Zabbix agent Hostname on Windows servers
+  hosts: zabbix_windows
+  gather_facts: true
+
+  vars_files:
+    - ../inventory/group_vars/zabbix_windows_vault.yml
+
+  roles:
+    - zabbix_agent_hostname
+
+  post_tasks:
+    - name: Show the hostname that was configured
+      ansible.builtin.debug:
+        msg: "Zabbix Hostname on {{ inventory_hostname }} set to '{{ zabbix_hostname }}' and service '{{ zabbix_service_name }}' is running."
