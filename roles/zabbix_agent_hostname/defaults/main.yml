@@ -1,0 +1,5 @@
+---
+zabbix_conf_path: 'C:\Program Files\Zabbix Agent\zabbix_agentd.conf'
+zabbix_service_name: 'Zabbix Agent'
+zabbix_hostname: "{{ inventory_hostname }}"
+zabbix_backup_conf: true

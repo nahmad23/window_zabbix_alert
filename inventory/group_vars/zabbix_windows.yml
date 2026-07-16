@@ -1,0 +1,31 @@
+---
+# Connection settings for the Windows servers (WinRM).
+#
+# Credentials should NOT be stored in plain text.
+# Create an encrypted vault file with:
+#   ansible-vault create inventory/group_vars/zabbix_windows_vault.yml
+# containing:
+#   vault_ansible_user: 'DOMAIN\svc_ansible'
+#   vault_ansible_password: 'YourPasswordHere'
+
+ansible_user: "{{ vault_ansible_user }}"
+ansible_password: "{{ vault_ansible_password }}"
+
+ansible_connection: winrm
+ansible_port: 5986
+ansible_winrm_transport: ntlm
+ansible_winrm_scheme: https
+ansible_winrm_server_cert_validation: ignore
+
+# If port 5986 (HTTPS) is not enabled on the servers, switch to HTTP:
+# ansible_port: 5985
+# ansible_winrm_scheme: http
+
+# --- Zabbix agent settings ---
+zabbix_conf_path: 'C:\Program Files\Zabbix Agent\zabbix_agentd.conf'
+zabbix_service_name: 'Zabbix Agent'
+
+# Hostname written into zabbix_agentd.conf.
+# Defaults to the inventory hostname, so each server gets its own name
+# exactly as listed in inventory/hosts.ini.
+zabbix_hostname: "{{ inventory_hostname }}"

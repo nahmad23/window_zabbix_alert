@@ -1,0 +1,8 @@
+---
+# Example vault file. Do NOT store real credentials unencrypted.
+# Create the real (encrypted) file with:
+#   ansible-vault create inventory/group_vars/zabbix_windows_vault.yml
+#
+# Use an account that is a local Administrator on the Windows servers.
+vault_ansible_user: 'UNITEDLEX\svc_ansible'
+vault_ansible_password: 'ChangeMe_SuperSecret!'
