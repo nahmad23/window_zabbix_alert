@@ -24,8 +24,10 @@ setup_ansible_server.sh                       # One-time control-node setup
 inventory/
   hosts.ini                                   # The 3 Windows servers
   group_vars/
-    zabbix_windows.yml                        # WinRM connection + Zabbix vars
-    zabbix_windows_vault.yml.example          # Credential vault template
+    zabbix_windows/
+      vars.yml                                # WinRM connection + Zabbix vars
+      vault.yml.example                       # Credential vault template
+      (vault.yml)                             # Your encrypted credentials (gitignored)
 playbooks/
   update_zabbix_hostname.yml                  # The playbook to run
 roles/
@@ -45,7 +47,7 @@ This installs `pywinrm` (Python WinRM client) and the `ansible.windows` /
 ### Create the credentials vault
 
 ```bash
-ansible-vault create inventory/group_vars/zabbix_windows_vault.yml
+ansible-vault create inventory/group_vars/zabbix_windows/vault.yml
 ```
 
 Content (see the `.example` file):
@@ -70,7 +72,7 @@ Invoke-WebRequest -Uri $url -OutFile ConfigureRemotingForAnsible.ps1
 ```
 
 Ensure port **5986** (WinRM HTTPS) is open from the Ansible server. If only
-**5985** (HTTP) is available, edit `inventory/group_vars/zabbix_windows.yml`
+**5985** (HTTP) is available, edit `inventory/group_vars/zabbix_windows/vars.yml`
 and switch `ansible_port`/`ansible_winrm_scheme` accordingly.
 
 ## 3. Test connectivity

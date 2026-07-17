@@ -3,10 +3,12 @@
 #
 # Credentials should NOT be stored in plain text.
 # Create an encrypted vault file with:
-#   ansible-vault create inventory/group_vars/zabbix_windows_vault.yml
+#   ansible-vault create inventory/group_vars/zabbix_windows/vault.yml
 # containing:
 #   vault_ansible_user: 'DOMAIN\svc_ansible'
 #   vault_ansible_password: 'YourPasswordHere'
+# Every file in this directory is auto-loaded for the zabbix_windows group,
+# so the vault works for both playbooks and ad-hoc commands (e.g. win_ping).
 
 ansible_user: "{{ vault_ansible_user }}"
 ansible_password: "{{ vault_ansible_password }}"

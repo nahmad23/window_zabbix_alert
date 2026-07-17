@@ -1,6 +1,6 @@
 # Never commit real credentials (even though ansible-vault encrypts them,
 # keep the vault out of git by default; remove this line if your team
 # prefers committing the encrypted vault).
-inventory/group_vars/zabbix_windows_vault.yml
+inventory/group_vars/zabbix_windows/vault.yml
 
 *.retry

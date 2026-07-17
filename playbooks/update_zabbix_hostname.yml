@@ -12,9 +12,6 @@
   hosts: zabbix_windows
   gather_facts: true
 
-  vars_files:
-    - ../inventory/group_vars/zabbix_windows_vault.yml
-
   roles:
     - zabbix_agent_hostname
 
