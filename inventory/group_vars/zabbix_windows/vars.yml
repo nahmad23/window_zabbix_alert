@@ -13,15 +13,17 @@
 ansible_user: "{{ vault_ansible_user }}"
 ansible_password: "{{ vault_ansible_password }}"
 
+# WinRM over HTTP (port 5985) - the servers' WinRM listener runs on HTTP.
+# NTLM transport still encrypts the message payload over HTTP.
 ansible_connection: winrm
-ansible_port: 5986
+ansible_port: 5985
 ansible_winrm_transport: ntlm
-ansible_winrm_scheme: https
+ansible_winrm_scheme: http
 ansible_winrm_server_cert_validation: ignore
 
-# If port 5986 (HTTPS) is not enabled on the servers, switch to HTTP:
-# ansible_port: 5985
-# ansible_winrm_scheme: http
+# If an HTTPS (5986) listener is configured on the servers, prefer it:
+# ansible_port: 5986
+# ansible_winrm_scheme: https
 
 # --- Zabbix agent settings ---
 zabbix_conf_path: 'C:\Program Files\Zabbix Agent\zabbix_agentd.conf'

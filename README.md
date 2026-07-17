@@ -71,9 +71,11 @@ Invoke-WebRequest -Uri $url -OutFile ConfigureRemotingForAnsible.ps1
 .\ConfigureRemotingForAnsible.ps1
 ```
 
-Ensure port **5986** (WinRM HTTPS) is open from the Ansible server. If only
-**5985** (HTTP) is available, edit `inventory/group_vars/zabbix_windows/vars.yml`
-and switch `ansible_port`/`ansible_winrm_scheme` accordingly.
+The connection defaults to WinRM over HTTP on port **5985** (NTLM transport,
+which still encrypts the payload). Ensure that port is open from the Ansible
+server. If your servers have an HTTPS (**5986**) listener, prefer it: edit
+`inventory/group_vars/zabbix_windows/vars.yml` and switch
+`ansible_port`/`ansible_winrm_scheme` accordingly.
 
 ## 3. Test connectivity
 
